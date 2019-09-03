@@ -1,5 +1,22 @@
 import math
 
+def minkowski_distance(original_features, cmp_features, m):
+    dist = 0
+    for i in range(len(original_features)):
+        dist += ((int(original_features[i]) - int(cmp_features[i])) ** m)
+    return math.pow(dist, 1/m)
+
+def sq_euclidean_distance(original_features, cmp_features):
+    """
+    Compute squared euclidean distance between two records
+    :param original_features: features like no. of flows or no. of packets of original record
+    :param cmp_features: features like no. of flows or no. of packets of compared record
+    :return: squared Euclidean distance between original and compared records
+    """
+    dist = 0
+    for i in range(len(original_features)):
+        dist += ((int(original_features[i]) - int(cmp_features[i])) ** 2)
+    return dist
 
 def euclidean_distance(original_features, cmp_features):
     """
@@ -40,12 +57,16 @@ def get_similar_host(sourceIP, flows, packets):
         cmp_sourceIP, cmp_flows, cmp_packets = split_record(r)
         if sourceIP == cmp_sourceIP:
             continue
-        dist = euclidean_distance([flows, packets], [cmp_flows, cmp_packets])
+        dist = minkowski_distance([flows, packets,int(packets)/int(flows)], [cmp_flows, cmp_packets, int(cmp_packets)/int(cmp_flows)],10)
         if (dist < similar_score):
             similar_score = dist
             similar_host = [cmp_sourceIP, cmp_flows, cmp_packets]
     s.close()
     return similar_score, similar_host
+
+
+
+
 
 csv_output = False
 
@@ -58,7 +79,7 @@ if(csv_output):
 for record in nfdump_stats.readlines():
 
     sourceIP, flows, packets = split_record(record)
-    score, similar_host = get_similar_host(sourceIP, flows, packets)
+    score, similar_host = get_similar_host(sourceIP, int(flows), int(packets))
     if(csv_output):
         out = open("similar_hosts.csv", "a")
         out.write(str(sourceIP) + ";" + str(flows) + ";" + str(packets).rstrip() + ";" + str(similar_host[0]) + ";"
