@@ -57,7 +57,7 @@ def get_similar_host(sourceIP, flows, packets):
         cmp_sourceIP, cmp_flows, cmp_packets = split_record(r)
         if sourceIP == cmp_sourceIP:
             continue
-        dist = minkowski_distance([flows, packets,int(packets)/int(flows)], [cmp_flows, cmp_packets, int(cmp_packets)/int(cmp_flows)],10)
+        dist = minkowski_distance([flows, packets], [cmp_flows, cmp_packets],10)
         if (dist < similar_score):
             similar_score = dist
             similar_host = [cmp_sourceIP, cmp_flows, cmp_packets]
