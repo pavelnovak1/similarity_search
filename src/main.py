@@ -9,13 +9,9 @@ Hlavni funkce ktera postupne spocita statistiky, a nasledne na zaklade zadanych 
 def main():
     data = dataprep.main("data")
     while True:
-        host = input("Write a host (default = all addresses): ")
-        t = int(input("Minimal threshold (default = 1000) : "))
-        knn = int(input("K nearest neighbours (default = 10) : "))
-        if t == "":
-            t = 1000
-        if knn == "":
-            knn = 10
+        host = input("Write a host: ")
+        t = int(input("Minimal threshold: "))
+        knn = int(input("K nearest neighbours: "))
         print("Counting similar hosts for " + host)
         result = counting_similarities.main(data, host, t, knn)
         if len(result) == 0:
