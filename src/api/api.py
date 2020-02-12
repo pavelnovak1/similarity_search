@@ -1,6 +1,7 @@
 from flask import Flask
 from flask_restful import Resource, Api
 
+from src.help_files.help import get_help, get_help_knn, get_help_lof, get_help_range, get_help_view
 from src.similarity_search.similarity_search_main import lof_main, knn_main, range_main, distance_main, detail_main
 
 
@@ -27,8 +28,8 @@ class Range(Resource):
     This class represents api for range query.
     """
 
-    def get(self, distanceFunction, host, range):
-        return "Not implemented yet"
+    def get(self, host, range):
+        return range_main(host, range)
 
 
 class Detail(Resource):
@@ -49,6 +50,34 @@ class Distance(Resource):
         return distance_main(host1, host2)
 
 
+class UtilityHelp(Resource):
+    """
+    Help
+    """
+
+    def get(self, help_class):
+        if not help_class in ["knn", "lof", "range"]:
+            return get_help()
+        elif help_class == "knn":
+            return get_help_knn()
+        elif help_class == "lof":
+            return get_help_lof()
+        elif help_class == "range":
+            return get_help_range()
+        elif help_class == "view":
+            return get_help_view()
+
+
+class Help(Resource):
+    def get(self):
+        return get_help()
+
+
+class Hello(Resource):
+    def get(self):
+        return "Hello"
+
+
 def app_run():
     """
     Runs the app
@@ -61,4 +90,7 @@ def app_run():
     api.add_resource(Range, '/range/<string:host>/<float:range>')
     api.add_resource(Detail, '/detail/<string:host>')
     api.add_resource(Distance, '/distance/<string:host1>/<string:host2>')
+    api.add_resource(UtilityHelp, '/help/<string:help_class>')
+    api.add_resource(Hello, '/')
+    api.add_resource(Help, '/help')
     app.run(debug=True)

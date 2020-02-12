@@ -1,5 +1,5 @@
 from src.data_tools import dataCollector as collector
-from src.similarity_search import knn
+from src.similarity_search import knn, range_search
 from src.similarity_search.distance_functions.distance_functions import minkowski_distance
 from src.similarity_search.lof import lof as local_outlier_factor
 
@@ -36,9 +36,8 @@ def knn_main(view, host, k, t):
     return result
 
 
-def range_main(f, host, t):
-    pass
-
+def range_main(host, t):
+    return range_search.range(host, t)
 
 def detail_main(host):
     return dc.get_info_about_address(host)
