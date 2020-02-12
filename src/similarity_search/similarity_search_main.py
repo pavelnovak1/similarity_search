@@ -1,7 +1,7 @@
 from src.data_tools import dataCollector as collector
 from src.similarity_search import knn
-from src.similarity_search.lof import LOF
 from src.similarity_search.distance_functions.distance_functions import minkowski_distance
+from src.similarity_search.lof import lof as local_outlier_factor
 
 NUMBER_OF_FEATURES = 18
 
@@ -9,10 +9,7 @@ dc = collector.dataCollector()
 
 
 def lof_main(host):
-    profile = dc.get_host_profile(host)
-    stats = dc.get_all_profiles()
-    lof = LOF(stats, normalize=False)
-    return lof.local_outlier_factor(5, profile[0])
+    return local_outlier_factor(host, 5)
 
 
 def knn_main(view, host, k, t):
@@ -24,14 +21,18 @@ def knn_main(view, host, k, t):
         view = "overall"
     all_profiles = make_all_profiles(exc=host)
     host_profile = make_host_profile(host)
-    nearest_neighbours = knn.k_nn(view, host_profile, all_profiles)  # All addresses sorted by distance (distance: [hosts])
-    result = []
-    for (d, h) in nearest_neighbours:  # for distance, hosts ...
-        for addr in h:  # for address in hosts
-            if len(result) < k and d <= t:  # if not k nearest neighbours yet and closer than threshold, append
-                result.append((addr, d))
-            else:
-                return result
+    nearest_neighbours = knn.k_nn(view, host_profile, all_profiles)  # All addresses sorted by distance (host, distance)
+    result = {}
+    last = 0
+    for (h, d) in nearest_neighbours:  # for host, distance ..
+        if len(result.keys()) < k and d <= t:  # if not k nearest neighbours yet and closer than threshold, append
+            result[h] = d
+            last = d
+        else:
+            if d == last:
+                result[h] = d
+                continue
+            return result
     return result
 
 
@@ -53,7 +54,7 @@ def distance_main(host1, host2):
     p1_out = missing_statistics_handling(profile1_out)
     p2_in = missing_statistics_handling(profile2_in)
     p2_out = missing_statistics_handling(profile2_out)
-    return minkowski_distance(p1_in, p2_in, p1_out, p2_out, 2)
+    return minkowski_distance(p1_in + p1_out, p2_in + p2_out, 2)
 
 
 def missing_statistics_handling(profile):
