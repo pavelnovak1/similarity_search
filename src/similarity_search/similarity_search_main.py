@@ -1,7 +1,8 @@
-from src.data_tools import dataCollector as collector
-from src.similarity_search import knn, range_search
-from src.similarity_search.distance_functions.distance_functions import minkowski_distance
-from src.similarity_search.lof import lof as local_outlier_factor
+from data_tools import dataCollector as collector
+from similarity_search import knn, range_search
+from similarity_search.distance_functions.distance_functions import minkowski_distance
+from similarity_search.lof import lof as local_outlier_factor
+import json
 
 NUMBER_OF_FEATURES = 18
 
@@ -9,10 +10,13 @@ dc = collector.dataCollector()
 
 
 def lof_main(host):
+    try:
+        (dc.get_host_profile(host))[0][1:]  # Loading host profile
+    except IndexError:
+        return "IP not found"
     return local_outlier_factor(host, 5)
 
-
-def knn_main(view, host, k, t):
+def knn_recount_main(view, host, k, t):
     try:
         (dc.get_host_profile(host))[0][1:]  # Loading host profile
     except IndexError:
@@ -25,6 +29,21 @@ def knn_main(view, host, k, t):
     result = {}
     last = 0
     for (h, d) in nearest_neighbours:  # for host, distance ..
+        if len(result.keys()) < k and d <= t:  # if not k nearest neighbours yet and closer than threshold, append
+            result[h] = d
+            last = d
+        else:
+            if d == last:
+                result[h] = d
+                continue
+            return result
+    return result
+
+def knn_main(host, k, t):
+    nearest_neighbours = dc.get_knn(host)[0][0]
+    result = {}
+    last = 0
+    for h, d in nearest_neighbours.items():  # for host, distance ..
         if len(result.keys()) < k and d <= t:  # if not k nearest neighbours yet and closer than threshold, append
             result[h] = d
             last = d

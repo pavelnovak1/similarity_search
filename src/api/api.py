@@ -1,8 +1,8 @@
 from flask import Flask
 from flask_restful import Resource, Api
 
-from src.help_files.help import get_help, get_help_knn, get_help_lof, get_help_range, get_help_view
-from src.similarity_search.similarity_search_main import lof_main, knn_main, range_main, distance_main, detail_main
+from help_files.help import get_help, get_help_knn, get_help_lof, get_help_range, get_help_view
+from similarity_search.similarity_search_main import lof_main, knn_main, range_main, distance_main, detail_main
 
 
 class LOF(Resource):

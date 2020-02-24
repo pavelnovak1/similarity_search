@@ -1,5 +1,5 @@
-from src.similarity_search.distance_functions.distance_functions import minkowski_distance
-from src.similarity_search.distance_functions.views import count_view
+from similarity_search.distance_functions.distance_functions import minkowski_distance
+from similarity_search.distance_functions.views import count_view
 
 
 def k_nn(view, target_host_profile, all_profiles):
@@ -22,3 +22,6 @@ def k_nn(view, target_host_profile, all_profiles):
         distances[ip_address] = distance_value
     distances = sorted(distances.items(), key=lambda x: x[1])
     return distances
+
+def k_nn(ip):
+    pass

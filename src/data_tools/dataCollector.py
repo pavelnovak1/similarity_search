@@ -1,15 +1,30 @@
-import src.data_tools.dbCommunicator as database
+import data_tools.dbCommunicator as database
 
 
+"""
+This class contains elementary SQL commands using in this program.
+"""
 class dataCollector:
 
     def __init__(self):
         self.db = database.DBCommunicator()
-
+    
+    
     def get_info_about_address(self, address):
+        """
+        Return raw host characteristics
+        :param address : host_address
+        :return Data about address
+        """
         return self.db.dbexecute("SELECT * FROM host_profile WHERE hosts_ip_address =" + '\'' + address + '\'')
 
     def get_data_about_host(self, host, direction):
+        """
+        Return raw data about host in selected direction
+        :param host host_address
+        :param direction direction
+        :return
+    """
         return self.db.dbexecute("SELECT flows_sum, packets_sum, bytes_sum, flows_avg, packets_avg, bytes_avg, "
                                  "flows_max, packets_max, bytes_max FROM host_profile WHERE hosts_ip_address ="
                                  + '\'' + host + '\''
@@ -80,3 +95,11 @@ class dataCollector:
                                  "ports_min_out, ports_max_in, ports_max_out FROM "
                                  "profiles_both_directions_all_devices " + where_clause)
 
+    def set_lof(self, ip, lof):
+        self.db.dbExecuteNoResult("INSERT INTO lof (ip_address, lof) VALUES ('" + ip + "' , '" + str(lof) + "')")
+
+    def set_knn(self, ip, knn):
+        self.db.dbExecuteNoResult("INSERT INTO nearest_neighbours (ip_address, knn) VALUES ('" + ip + "', '" + knn + "')")
+
+    def get_knn(self, ip):
+        return self.db.dbexecute("SELECT knn FROM nearest_neighbours WHERE ip_address = '" + ip + "'")
