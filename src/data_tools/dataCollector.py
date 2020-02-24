@@ -1,55 +1,54 @@
 import data_tools.dbCommunicator as database
 
-
 """
 This class contains elementary SQL commands using in this program.
 """
+
+
 class dataCollector:
 
     def __init__(self):
         self.db = database.DBCommunicator()
-    
-    
-    def get_info_about_address(self, address):
+
+    def host_get_raw_info(self, host):
         """
         Return raw host characteristics
-        :param address : host_address
+        :param host : host_address
         :return Data about address
         """
-        return self.db.dbexecute("SELECT * FROM host_profile WHERE hosts_ip_address =" + '\'' + address + '\'')
+        return self.db.dbexecute("SELECT * FROM host_profile WHERE hosts_ip_address =" + '\'' + host + '\'')
 
-    def get_data_about_host(self, host, direction):
+    def host_get_raw_info_directions(self, host, direction):
         """
         Return raw data about host in selected direction
         :param host host_address
         :param direction direction
         :return
-    """
+        """
         return self.db.dbexecute("SELECT flows_sum, packets_sum, bytes_sum, flows_avg, packets_avg, bytes_avg, "
                                  "flows_max, packets_max, bytes_max FROM host_profile WHERE hosts_ip_address ="
                                  + '\'' + host + '\''
                                  + " AND direction = " + '\'' + direction + '\'')
 
-    def get_in_info_about_address(self, address):
-        return self.db.dbexecute("SELECT * FROM host_profile WHERE hosts_ip_adress =" + address + " AND direction=ín")
+    def host_get_raw_info_direction_in(self, host):
+        return self.db.dbexecute("SELECT * FROM host_profile WHERE hosts_ip_adress =" + host + " AND direction=ín")
 
-    def get_out_info_about_address(self, address):
+    def host_get_raw_info_direction_out(self, host):
         return self.db.dbexecute(
-            "SELECT * FROM host_profile WHERE hosts_ip_adress =" + address + " AND direction='out'")
+            "SELECT * FROM host_profile WHERE hosts_ip_adress =" + host + " AND direction='out'")
 
-    def get_unique_addresses(self):
+    def get_unique_ip_addresses(self):
         return self.db.dbexecute(
             "SELECT DISTINCT host_profile.hosts_ip_address FROM host_profile"
         )
 
     def get_host_profile(self, host):
-        data = self.db.dbexecute("SELECT * FROM profiles_both_directions_all_devices WHERE ip_address = '" + host + "'")
-        return data
+        return self.db.dbexecute("SELECT * FROM profiles_both_directions_all_devices WHERE ip_address = '" + host + "'")
 
-    def get_all_profiles(self):
+    def load_database_raw_data(self):
         return self.db.dbexecute("SELECT * FROM profiles_both_directions_all_devices")
 
-    def get_general_statistics(self, exc=None, host=None):
+    def general(self, exc=None, host=None):
         if exc is not None:
             where_clause = "WHERE ip_address != '" + exc + "'"
         else:
@@ -58,7 +57,7 @@ class dataCollector:
                                  "flows_avg_in, flows_avg_out, packets_avg_in, packets_avg_out, bytes_avg_in, "
                                  "bytes_avg_out FROM profiles_both_directions_all_devices " + where_clause)
 
-    def get_advanced_statistics(self, exc=None, host=None):
+    def advanced(self, exc=None, host=None):
         if exc is not None:
             where_clause = "WHERE ip_address != '" + exc + "'"
         else:
@@ -66,7 +65,7 @@ class dataCollector:
         return self.db.dbexecute("SELECT ip_address, duration_50_in, duration_50_out FROM "
                                  "profiles_both_directions_all_devices " + where_clause)
 
-    def get_network_layer_statistics(self, exc=None, host=None):
+    def network(self, exc=None, host=None):
         if exc is not None:
             where_clause = "WHERE ip_address != '" + exc + "'"
         else:
@@ -75,7 +74,7 @@ class dataCollector:
                                  "bytes_sum_in, bytes_sum_out FROM "
                                  "profiles_both_directions_all_devices " + where_clause)
 
-    def get_statistic_features_statistics(self, exc=None, host=None):
+    def statistics(self, exc=None, host=None):
         if exc is not None:
             where_clause = "WHERE ip_address != '" + exc + "'"
         else:
@@ -86,7 +85,7 @@ class dataCollector:
                                  "bytes_95_in, bytes_95_out FROM "
                                  "profiles_both_directions_all_devices " + where_clause)
 
-    def get_application_layer_statistics(self, exc=None, host=None):
+    def application(self, exc=None, host=None):
         if exc is not None:
             where_clause = "WHERE ip_address != '" + exc + "'"
         else:
@@ -95,11 +94,12 @@ class dataCollector:
                                  "ports_min_out, ports_max_in, ports_max_out FROM "
                                  "profiles_both_directions_all_devices " + where_clause)
 
-    def set_lof(self, ip, lof):
-        self.db.dbExecuteNoResult("INSERT INTO lof (ip_address, lof) VALUES ('" + ip + "' , '" + str(lof) + "')")
+    def set_lof(self, host, lof):
+        self.db.dbExecuteNoResult("INSERT INTO lof (ip_address, lof) VALUES ('" + host + "' , '" + str(lof) + "')")
 
-    def set_knn(self, ip, knn):
-        self.db.dbExecuteNoResult("INSERT INTO nearest_neighbours (ip_address, knn) VALUES ('" + ip + "', '" + knn + "')")
+    def set_knn(self, host, knn):
+        self.db.dbExecuteNoResult(
+            "INSERT INTO nearest_neighbours (ip_address, knn) VALUES ('" + host + "', '" + knn + "')")
 
-    def get_knn(self, ip):
-        return self.db.dbexecute("SELECT knn FROM nearest_neighbours WHERE ip_address = '" + ip + "'")
+    def get_knn(self, host):
+        return self.db.dbexecute("SELECT knn FROM nearest_neighbours WHERE ip_address = '" + host + "'")

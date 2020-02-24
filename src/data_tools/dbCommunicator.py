@@ -3,6 +3,8 @@ import psycopg2 as db
 """
 This class is for direct communication to database. Includes creating connection to database and executing arbitrary SQL command
 """
+
+
 class DBCommunicator:
 
     def __init__(self):
@@ -30,7 +32,6 @@ class DBCommunicator:
             return result
         return None
 
-    
     def dbExecuteNoResult(self, command):
         """
         Executes command where output is no data but only changes in database

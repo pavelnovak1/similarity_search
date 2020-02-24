@@ -6,7 +6,7 @@ from similarity_search.similarity_search_main import knn_main
 
 dc = collector.dataCollector()
 
-addresses = dc.get_unique_addresses()
+addresses = dc.get_unique_ip_addresses()
 
 for ip in addresses:
     ip = str(ip[0])
