@@ -23,5 +23,3 @@ def k_nn(view, target_host_profile, all_profiles):
     distances = sorted(distances.items(), key=lambda x: x[1])
     return distances
 
-def k_nn(ip):
-    pass
