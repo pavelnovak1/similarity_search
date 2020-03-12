@@ -1,14 +1,28 @@
-import data_tools.dbCommunicator as database
+import src.data_tools.dbConnection as database
 
 """
 This class contains elementary SQL commands using in this program.
 """
 
 
-class dataCollector:
+class SQLCommands:
 
     def __init__(self):
-        self.db = database.DBCommunicator()
+        self.db = database.dbConnection()
+
+    def get_unique_ip(self):
+        return self.db.dbGetData("SELECT DISTINCT hosts_ip_address FROM host_profile")
+
+    def get_ip_in_range(self, ip_range):
+        return self.db.dbGetData("SELECT DISTINCT hosts_ip_address FROM host_profile WHERE hosts_ip_address LIKE '"
+                                 + ip_range + "%'")
+
+    def load_database_range(self, ip_range):
+        return self.db.dbGetData("SELECT * FROM profiles_both_directions_all_devices WHERE ip_address LIKE '" +
+                                 ip_range + "%'")
+
+    def get_host_profile(self, host):
+        return self.db.dbGetData("SELECT * FROM profiles_both_directions_all_devices WHERE ip_address = '" + host + "'")
 
     def host_get_raw_info(self, host):
         """
@@ -36,14 +50,6 @@ class dataCollector:
     def host_get_raw_info_direction_out(self, host):
         return self.db.dbGetData(
             "SELECT * FROM host_profile WHERE hosts_ip_adress =" + host + " AND direction='out'")
-
-    def get_unique_ip_addresses(self):
-        return self.db.dbGetData(
-            "SELECT DISTINCT host_profile.hosts_ip_address FROM host_profile"
-        )
-
-    def get_host_profile(self, host):
-        return self.db.dbGetData("SELECT * FROM profiles_both_directions_all_devices WHERE ip_address = '" + host + "'")
 
     def load_database_raw_data(self):
         return self.db.dbGetData("SELECT * FROM profiles_both_directions_all_devices")

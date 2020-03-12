@@ -3,7 +3,7 @@ from similarity_search.similarity_search_main import knn_main
 
 dc = collector.dataCollector()
 
-addresses = dc.get_unique_ip_addresses()
+addresses = dc.get_unique_ip()
 
 for ip in addresses:
     ip = str(ip[0])

@@ -1,4 +1,4 @@
-from api.api import app_run
+from src.api.api import app_run
 
 """
 Entry point
