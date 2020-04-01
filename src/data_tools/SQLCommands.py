@@ -20,8 +20,10 @@ class SQLCommands:
     def load_database_range(self, ip_range):
         return self.db.dbGetData("SELECT * FROM profiles_both_directions_all_devices WHERE ip_address LIKE '" +
                                  ip_range + "%'")
-    def counted(self):
-        return self.db.dbGetData("SELECT DISTINCT ip FROM lofWorkStations")
+
+    def load_range_addresses(self, ip_range):
+        return self.db.dbGetData("SELECT DISTINCT ip_address FROM profiles_both_directions_all_devices WHERE ip_address"
+                                 "LIKE '" + ip_range + "%'")
 
     def get_host_profile(self, host):
         return self.db.dbGetData("SELECT * FROM profiles_both_directions_all_devices WHERE ip_address = '" + host + "'")

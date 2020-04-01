@@ -12,11 +12,12 @@ class LOF(Resource):
         return lof_main(host, ip_range)
 
 class LOFRange(Resource):
+    """LOF of all devices within a given range"""
     def get(self, ip_range):
         return lof_range_main(ip_range)
 
 class LOFInterRange(Resource):
-
+    """LOF of all devices in source range within a target range"""
     def get(self, source_range, target_range):
         return lof_interrange_main(source_range, target_range)
 

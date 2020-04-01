@@ -11,13 +11,6 @@ class dbConnection:
         self.connection = db.connect("dbname=host_behavior user=postgres password=gynemi4jov")
         self.cursor = self.connection.cursor()
 
-    def dbclose(self):
-        """
-        Close connection to database
-        :return: Nothing
-        """
-        self.connection.close()
-
     def dbGetData(self, command):
         """
         Executes the specified SQL command
