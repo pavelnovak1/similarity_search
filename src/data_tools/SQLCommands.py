@@ -1,4 +1,4 @@
-import src.data_tools.dbConnection as database
+import data_tools.dbConnection as database
 
 """
 This class contains elementary SQL commands using in this program.
@@ -20,6 +20,8 @@ class SQLCommands:
     def load_database_range(self, ip_range):
         return self.db.dbGetData("SELECT * FROM profiles_both_directions_all_devices WHERE ip_address LIKE '" +
                                  ip_range + "%'")
+    def counted(self):
+        return self.db.dbGetData("SELECT DISTINCT ip FROM lofWorkStations")
 
     def get_host_profile(self, host):
         return self.db.dbGetData("SELECT * FROM profiles_both_directions_all_devices WHERE ip_address = '" + host + "'")
@@ -100,8 +102,14 @@ class SQLCommands:
                                  "ports_min_out, ports_max_in, ports_max_out FROM "
                                  "profiles_both_directions_all_devices " + where_clause)
 
-    def set_lof(self, host, lof):
-        self.db.dbInsertData("INSERT INTO lof (ip_address, lof) VALUES ('" + host + "' , '" + str(lof) + "')")
+    def set_lof_work_stations(self, host, lof):
+        self.db.dbInsertData("INSERT INTO lofWorkStations (ip, lof) VALUES ('" + host + "' , '" + str(lof) + "')")
+
+    def set_lof_servers(self, host, lof):
+        self.db.dbInsertData("INSERT INTO lofServers (ip, lof) VALUES ('" + host + "' , '" + str(lof) + "')")
+
+    def set_lof_interrange(self, host, lof):
+        self.db.dbInsertData("INSERT INTO stations_servers (ip, lof) VALUES ('" + host + "' , '" + str(lof) + "')")
 
     def set_knn(self, host, knn):
         self.db.dbInsertData(

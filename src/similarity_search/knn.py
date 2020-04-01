@@ -1,6 +1,6 @@
-from src.similarity_search.distance_functions.distance_functions import minkowski_distance
-from src.similarity_search.distance_functions.views import count_view
-from src.data_tools import SQLCommands as sqlCommands
+from similarity_search.distance_functions.distance_functions import minkowski_distance
+from similarity_search.distance_functions.views import count_view
+from data_tools import SQLCommands as sqlCommands
 
 sql = sqlCommands.SQLCommands()
 

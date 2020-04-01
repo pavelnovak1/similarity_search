@@ -1,7 +1,7 @@
-from src.data_tools import SQLCommands as sql_commands
-from src.similarity_search import knn, range_search
-from src.similarity_search.distance_functions.distance_functions import minkowski_distance
-from src.similarity_search.lof import lof as local_outlier_factor
+from data_tools import SQLCommands as sql_commands
+from similarity_search import knn, range_search
+from similarity_search.distance_functions.distance_functions import minkowski_distance
+from similarity_search.lof import lof as local_outlier_factor
 import re
 
 NUMBER_OF_FEATURES = 18
@@ -9,20 +9,34 @@ NUMBER_OF_FEATURES = 18
 sql = sql_commands.SQLCommands()
 
 
-def lof_main(host, k=5):
+def lof_main(host, ip_range=None, k=5):
     try:
         (sql.get_host_profile(host))[0][1:]  # Loading host profile
     except IndexError:
         return "IP not found"
-    return local_outlier_factor(host, k)
+    return local_outlier_factor(host, ip_range, k)
 
+def lof_range_main(ip_range):
+    counted = []
+    for ip in sql.load_database_range(ip_range):
+        if not ip[0] in counted:
+            counted.append(ip[0])
+            sql.set_lof_servers(ip[0] , lof_main(ip[0], ip_range))
+def lof_interrange_main(source_range, target_range):
+    counted = []
+    for ip in sql.load_database_range(source_range):
+        if not ip[0] in counted:
+            counted.append(ip[0])
+            sql.set_lof_interrange(ip[0], lof_main(ip[0], target_range))
 
-def knn_main(view, host, k, t):
+def knn_main(view, host, ip_range=None, k=5, t=0.05):
     try:
         (sql.get_host_profile(host))[0][1:]  # Loading host profile
     except IndexError:
         return "IP not found"
-    return knn.k_nn(view, host, re.search("[1-9]+[.][1-9]+[.][1-9]+", host).group(), k, t)
+    if ip_range is None:
+        ip_range = re.search("[0-9]+[.][0-9]+[.][0-9]+", host).group() 
+    return knn.k_nn(view, host, ip_range, k, t)
 
 """
 def knn_main(host, k, t):
