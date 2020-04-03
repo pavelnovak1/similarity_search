@@ -1,7 +1,10 @@
 from data_tools import SQLCommands as sql_commands
 from similarity_search import knn, range_search
 from similarity_search.lof import lof as local_outlier_factor
+from similarity_search.distance_functions.distance_functions import minkowski_distance
 import re
+
+
 
 NUMBER_OF_FEATURES = 18
 
@@ -60,3 +63,22 @@ def range_main(host, t):
 
 def detail_main(host):
     return sql.host_get_raw_info(host)
+
+
+def distance_main(host1, host2):
+    profile1_in = sql.host_get_raw_info_directions(host1, direction="in")
+    profile1_out = sql.host_get_raw_info_directions(host1, direction="out")
+    profile2_in = sql.host_get_raw_info_directions(host2, direction="in")
+    profile2_out = sql.host_get_raw_info_directions(host2, direction="out")
+
+    p1_in = missing_statistics_handling(profile1_in)
+    p1_out = missing_statistics_handling(profile1_out)
+    p2_in = missing_statistics_handling(profile2_in)
+    p2_out = missing_statistics_handling(profile2_out)
+    return minkowski_distance(p1_in + p1_out, p2_in + p2_out, 2)
+
+
+def missing_statistics_handling(profile):
+    if len(profile) != 1:
+        profile = [(0,) * NUMBER_OF_FEATURES]
+    return profile[0]
