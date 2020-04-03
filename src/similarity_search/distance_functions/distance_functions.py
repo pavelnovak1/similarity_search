@@ -13,7 +13,7 @@ def minkowski_distance(instance1, instance2, k):
         raise AttributeError("Instances have different number of arguments.")
     differences = [0] * len(instance1)
     for i, (attr1, attr2) in enumerate(zip(instance1, instance2)):
-        differences[i] = attr1 - attr2
+        differences[i] = float(attr1) - float(attr2)
     result = (sum(map(lambda x: x ** k, differences)) / len(differences)) ** (1 / k)
     return result
 

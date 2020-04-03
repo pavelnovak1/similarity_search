@@ -14,8 +14,8 @@ class SQLCommands:
         return self.db.dbGetData("SELECT DISTINCT hosts_ip_address FROM host_profile")
 
     def get_ip_in_range(self, ip_range):
-        return self.db.dbGetData("SELECT DISTINCT hosts_ip_address FROM host_profile WHERE hosts_ip_address LIKE '"
-                                 + ip_range + "%'")
+        return self.db.dbGetData("SELECT DISTINCT ip_address FROM host_profile WHERE ip_address LIKE '" +
+                                 ip_range + "%'")
 
     def load_database_range(self, ip_range):
         return self.db.dbGetData("SELECT * FROM profiles_both_directions_all_devices WHERE ip_address LIKE '" +
@@ -23,7 +23,7 @@ class SQLCommands:
 
     def load_range_addresses(self, ip_range):
         return self.db.dbGetData("SELECT DISTINCT ip_address FROM profiles_both_directions_all_devices WHERE ip_address"
-                                 "LIKE '" + ip_range + "%'")
+                                 " LIKE '" + ip_range + "%'")
 
     def get_host_profile(self, host):
         return self.db.dbGetData("SELECT * FROM profiles_both_directions_all_devices WHERE ip_address = '" + host + "'")
@@ -119,3 +119,11 @@ class SQLCommands:
 
     def get_knn(self, host):
         return self.db.dbGetData("SELECT knn FROM nearest_neighbours WHERE ip_address = '" + host + "'")
+
+    def profiles_categories(self, ip_range, ip = None):
+        if ip != None:
+            where = "WHERE ip_address = '" + ip + "'"
+        else: 
+            where = "WHERE ip_address LIKE '" + ip_range + "%'"
+        return self.db.dbGetData("SELECT * FROM profiles_aggregations " + where)
+

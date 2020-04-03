@@ -13,18 +13,17 @@ def k_nn(view, host, ip_range, k, t):
     :return:
     """
     distances = {}
-    host_profile = [sql.general(None, host), sql.advanced(None, host), sql.network(None, host)
-                    , sql.statistics(None, host), sql.application(None, host)]
-    for ip in sql.load_range_addresses(ip_range):
-        if ip[0] == host:
+    host_profile = sql.profiles_categories(ip_range, host)[0]
+    profiles = sql.profiles_categories(ip_range)
+
+    for device in profiles:
+        if device[0] == host:
             continue
         else:
-            profile = [sql.general(None, ip[0]), sql.advanced(None, ip[0]), sql.network(None, ip[0])
-                    , sql.statistics(None, ip[0]), sql.application(None, ip[0])]
             distance_vector = [0, 0, 0, 0, 0]
             for i in range(5):
-                distance_vector[i] = minkowski_distance(profile[i], host_profile[i], 2)
-            distances[ip[0]] = count_view(view, tuple(distance_vector))
+                distance_vector[i] = minkowski_distance(device[i+1], host_profile[i+1], 2)
+            distances[device[0]] = count_view(view, tuple(distance_vector))
 
 
     distances = {k: v for k, v in sorted(distances.items(), key=lambda item: item[1])}
