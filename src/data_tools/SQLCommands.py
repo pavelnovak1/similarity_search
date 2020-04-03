@@ -48,16 +48,6 @@ class SQLCommands:
                                  + '\'' + host + '\''
                                  + " AND direction = " + '\'' + direction + '\'')
 
-    def host_get_raw_info_direction_in(self, host):
-        return self.db.dbGetData("SELECT * FROM host_profile WHERE hosts_ip_adress =" + host + " AND direction=ín")
-
-    def host_get_raw_info_direction_out(self, host):
-        return self.db.dbGetData(
-            "SELECT * FROM host_profile WHERE hosts_ip_adress =" + host + " AND direction='out'")
-
-    def load_database_raw_data(self):
-        return self.db.dbGetData("SELECT * FROM profiles_both_directions_all_devices")
-
     def general(self, exc=None, host=None):
         if exc is not None:
             where_clause = "WHERE ip_address != '" + exc + "'"
@@ -113,12 +103,6 @@ class SQLCommands:
     def set_lof_interrange(self, host, lof):
         self.db.dbInsertData("INSERT INTO stations_servers (ip, lof) VALUES ('" + host + "' , '" + str(lof) + "')")
 
-    def set_knn(self, host, knn):
-        self.db.dbInsertData(
-            "INSERT INTO nearest_neighbours (ip_address, knn) VALUES ('" + host + "', '" + knn + "')")
-
-    def get_knn(self, host):
-        return self.db.dbGetData("SELECT knn FROM nearest_neighbours WHERE ip_address = '" + host + "'")
 
     def profiles_categories(self, ip_range, ip = None):
         if ip != None:
