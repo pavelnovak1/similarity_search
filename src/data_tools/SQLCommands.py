@@ -109,5 +109,13 @@ class SQLCommands:
             where = "WHERE ip_address = '" + ip + "'"
         else: 
             where = "WHERE ip_address LIKE '" + ip_range + "%'"
-        return self.db.dbGetData("SELECT * FROM profiles_aggregations " + where)
+        return self.db.dbGetData("SELECT * FROM profiles_categories " + where)
 
+    def get_quantiles(self, ip_range):
+        return self.db.dbGetData("SELECT q1, q2, q3 FROM quantiles WHERE ip_range = '" + ip_range + "'")
+
+    def update_quantiles(self, ip_range, q1, q2, q3):
+        return self.db.dbInsertData("INSERT INTO quantiles(ip_range, q1, q2, q3) "
+                                    "VALUES('" + ip_range + "', " + str(q1) + ", " + str(q2) + ", " + str(q3)+ ") "
+                                    "ON CONFLICT (ip_range) "
+                                    "DO UPDATE SET q1 = " + str(q1) + ", q2 = " + str(q2) + ", q3 = " + str(q3) )
