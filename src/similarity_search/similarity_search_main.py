@@ -1,4 +1,4 @@
-from data_tools import SQLCommands as sql_commands
+from data_tools import sql_commands as sql_c
 from similarity_search import knn, range_search
 from similarity_search.lof import lof as local_outlier_factor
 from similarity_search.distance_functions.distance_functions import minkowski_distance
@@ -7,7 +7,7 @@ import math
 import re
 import numpy
 
-sql = sql_commands.SQLCommands()
+sql = sql_c.sql_commands()
 
 def update_borders(ip_range):
     result = set()
