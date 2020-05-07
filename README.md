@@ -13,21 +13,48 @@ Each folder contains *about.md* file, where is depicted the services and the fun
 ## Use
 
 1. Run src.main
-2. Using the GET function:
-    - for ***knn query***: /knn/view/host/k/t
+2. Using the HTTP GET function:
+    - ***K-NN query***: 
+    Return K nearest neighbours to the given host.
+
+      - / knn / view / host / k / t
+      - view: One of 'overall', 'traffic' and 'application'. Default is 'overall'.
+      - host: IP address of a specific host.
+      - k: K value to determine how many devices should be in the result.
+      - t: Threshold. Every device which is further than t is not included into the result.
+
     eg. /knn/overall/239.36.249.160/5500/0.0003
-If the address is not found, "IP not found" is displayed, otherwise the list of nearest addresses and their distance is displayed.
 
-    - To display the ***address detail***, use / detail / <string: host> eg detail / 239.36.255.4
-The address data is displayed if not found, IP not found is displayed.
+    If the address is not found, "IP not found" is displayed, otherwise the list of nearest addresses and their distance is displayed.
 
-    - for ***LOF*** query: / lof / <string: host> eg /lof/239.36.255.4
-it is calculated and returns the LOF value for the address.
 
-- \> 1 outlier
+    - ***LOF query***: 
+    Return value of a Local Outlier Factor for a specified device.
 
-- ~ 1 same as others
+      - / lof / host / IP range 
+      - host: IP address of a specific host.
+      - IP range: IP range in which similar device will be searched.
 
-- \< 1 inlier
+    eg. / lof / 239.36.255.4 / 239.36.255
+
+    ### LOF values interpetation:
+
+    - \> 1 outlier
+
+    - ~ 1 same as others
+
+    - \< 1 inlier
+
+    - ***Address Detail***:
+    Shows a detail of a communication profile of a specified host.
+      - / detail / host
+      - host: IP address of a specific host.
+    
+    eg. detail / 239.36.255.4
+
+    If the address is not found, "IP not found" is displayed, otherwise the communication profile is displayed.
+
 
 Guide, how to use all functions of this program is described in the documentation.
+
+The result is always in the JSON format. 
