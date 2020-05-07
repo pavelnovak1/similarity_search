@@ -36,6 +36,8 @@ def lof_range_main(ip_range, k=5):
     for ip in sql.load_range_addresses(ip_range):
         if not ip[0] in result.keys():
             result[ip[0]] = lof_main(ip[0], ip_range, k)
+            print( ip[0] )
+            print( result[ip[0]] )
     return result
 
 def scanner_main(ip_range):

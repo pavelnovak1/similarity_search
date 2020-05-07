@@ -18,15 +18,15 @@ class SQLCommands:
                                  ip_range + "%'")
 
     def load_database_range(self, ip_range):
-        return self.db.dbGetData("SELECT * FROM final_profiles WHERE ip_address LIKE '" +
+        return self.db.dbGetData("SELECT * FROM profiles_both_directions_all_devices WHERE ip_address LIKE '" +
                                  ip_range + "%'")
 
     def load_range_addresses(self, ip_range):
-        return self.db.dbGetData("SELECT DISTINCT ip_address FROM final_profiles WHERE ip_address"
+        return self.db.dbGetData("SELECT DISTINCT ip_address FROM profiles_both_directions_all_devices WHERE ip_address"
                                  " LIKE '" + ip_range + "%'")
 
     def get_host_profile(self, host):
-        return self.db.dbGetData("SELECT * FROM final_profiles WHERE ip_address = '" + host + "'")
+        return self.db.dbGetData("SELECT * FROM profiles_both_directions_all_devices WHERE ip_address = '" + host + "'")
 
     def host_get_raw_info(self, host):
         """
@@ -55,7 +55,7 @@ class SQLCommands:
             where_clause = "WHERE ip_address = '" + host + "'"
         return self.db.dbGetData("SELECT ip_address, communication_peers_avg_in, communication_peers_avg_out,"
                                  "flows_avg_in, flows_avg_out, packets_avg_in, packets_avg_out, bytes_avg_in, "
-                                 "bytes_avg_out FROM final_profiles " + where_clause)
+                                 "bytes_avg_out FROM profiles_both_directions_all_devices " + where_clause)
 
     def advanced(self, exc=None, host=None):
         if exc is not None:
@@ -63,7 +63,7 @@ class SQLCommands:
         else:
             where_clause = "WHERE ip_address = '" + host + "'"
         return self.db.dbGetData("SELECT ip_address, duration_50_in, duration_50_out FROM "
-                                 "final_profiles " + where_clause)
+                                 "profiles_both_directions_all_devices " + where_clause)
 
     def network(self, exc=None, host=None):
         if exc is not None:
@@ -72,7 +72,7 @@ class SQLCommands:
             where_clause = "WHERE ip_address = '" + host + "'"
         return self.db.dbGetData("SELECT ip_address, flows_sum_in, flows_sum_out, packets_sum_in, packets_sum_out,"
                                  "bytes_sum_in, bytes_sum_out FROM "
-                                 "final_profiles " + where_clause)
+                                 "profiles_both_directions_all_devices " + where_clause)
 
     def statistics(self, exc=None, host=None):
         if exc is not None:
@@ -83,7 +83,7 @@ class SQLCommands:
                                  "packets_stddev_out, bytes_stddev_in, bytes_stddev_out,"
                                  "flows_95_in, flows_95_out, packets_95_in, packets_95_out,"
                                  "bytes_95_in, bytes_95_out FROM "
-                                 "final_profiles " + where_clause)
+                                 "profiles_both_directions_all_devices " + where_clause)
 
     def application(self, exc=None, host=None):
         if exc is not None:
@@ -92,14 +92,24 @@ class SQLCommands:
             where_clause = "WHERE ip_address = '" + host + "'"
         return self.db.dbGetData("SELECT ip_address, ports_avg_in, ports_avg_out, ports_min_in,"
                                  "ports_min_out, ports_max_in, ports_max_out FROM "
-                                 "final_profiles " + where_clause)
+                                 "profiles_both_directions_all_devices " + where_clause)
+
+    def set_lof_work_stations(self, host, lof):
+        self.db.dbInsertData("INSERT INTO lofWorkStations (ip, lof) VALUES ('" + host + "' , '" + str(lof) + "')")
+
+    def set_lof_servers(self, host, lof):
+        self.db.dbInsertData("INSERT INTO lofServers (ip, lof) VALUES ('" + host + "' , '" + str(lof) + "')")
+
+    def set_lof_interrange(self, host, lof):
+        self.db.dbInsertData("INSERT INTO stations_servers (ip, lof) VALUES ('" + host + "' , '" + str(lof) + "')")
+
 
     def profiles_categories(self, ip_range, ip = None):
         if ip != None:
             where = "WHERE ip_address = '" + ip + "'"
         else: 
             where = "WHERE ip_address LIKE '" + ip_range + "%'"
-        return self.db.dbGetData("SELECT * FROM categories " + where)
+        return self.db.dbGetData("SELECT * FROM profiles_categories " + where)
 
     def get_quantiles(self, ip_range):
         return self.db.dbGetData("SELECT q1, q2, q3 FROM quantiles WHERE ip_range = '" + ip_range + "'")

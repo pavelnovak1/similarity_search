@@ -8,7 +8,7 @@ This class is for direct communication to database. Includes creating connection
 class dbConnection:
 
     def __init__(self):
-        self.connection = db.connect("dbname=host_behavior user=postgres password=gynemi4jov")
+        self.connection = db.connect("dbname=db_host_profiles user=postgres password=gynemi4jov")
         self.cursor = self.connection.cursor()
 
     def dbGetData(self, command):
