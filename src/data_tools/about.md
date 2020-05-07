@@ -1,7 +1,7 @@
 # data_tools package
 
-This package contains scripts for communicating with the database.
+This package provides an interface for communicating with the database.
 
-- **dbCommunicator** includes methods for working directly with the database, such as establishing a connection, closing a connection, and executing commands.
+- **dbCommunicator** is used to establish a connection with the PostgreSQL database and communicate with it when executing an SQL query.
 
-- **dataCollector** provides prepared commands for selecting data from the database
+- **SQLCommands** provides methods that executes prepared SQL commands.

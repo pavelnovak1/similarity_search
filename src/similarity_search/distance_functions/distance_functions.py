@@ -3,11 +3,11 @@ import math
 
 def minkowski_distance(instance1, instance2, k):
     """
-    Computes minkowski distance of two vectors
+    Computes Minkowski distance between two vectors.
     :param instance1: vector 1
     :param instance2: vector 2
     :param k: k parameter
-    :return: minkowski distance of two vectors
+    :return: Minkowski distance between two vectors
     """
     if len(instance1) != len(instance2):
         raise AttributeError("Instances have different number of arguments.")
@@ -20,10 +20,10 @@ def minkowski_distance(instance1, instance2, k):
 
 def sq_euclidean_distance(instance1, instance2):
     """
-    Computes squared euclidean distance of two vectors
+    Computes squared euclidean distance between two vectors
     :param instance1: vector 1
     :param instance2: vector 2
-    :return: Squared Euclidean distance of two vectors
+    :return: Squared Euclidean distance between two vectors
     """
     if len(instance1) != len(instance2):
         raise AttributeError("Instances have different number of arguments.")
@@ -35,11 +35,11 @@ def sq_euclidean_distance(instance1, instance2):
 
 def cosine_similarity(instance1, instance2):
     """
-        Computes cosine distance of two vectors
-        :param instance1: vector 1
-        :param instance2: vector 2
-        :return: Cosine distance of two vectors
-        """
+    Computes cosine distance of two vectors
+    :param instance1: vector 1
+    :param instance2: vector 2
+    :return: Cosine distance of two vectors
+    """
     if len(instance1) != len(instance2):
         raise AttributeError("Instances have different number of arguments.")
     a = 0

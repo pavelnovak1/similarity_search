@@ -7,7 +7,13 @@ sql = sqlCommands.SQLCommands()
 
 def k_nn(view, host, ip_range, k, t):
     """
-    Count k nearest neighbors to the host
+    Count K nearest neighbors to the specified host.
+    :param view: Specification of a view. It is one of 'overall', 'traffic' and 'application'
+    :param host: Wanted host.
+    :param ip_range: Wanted IP where the nearest devices is searched.
+    :param k: K value.
+    :param t: Threshold. All devices further than t is not included into the result.
+    :return: K nearest neighbours to the given host.
     """
     distances = {}
     host_profile = sql.profiles_categories(ip_range, host)[0]

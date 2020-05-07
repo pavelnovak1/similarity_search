@@ -11,7 +11,7 @@ sql = sql_commands.SQLCommands()
 
 def update_borders(ip_range):
     result = set()
-    for ip in sql.load_range_addresses(ip_range):
+    for ip in sql.get_ip_range(ip_range):
         result.update(knn.k_nn("overall", ip[0], ip_range, math.inf, math.inf).values())
     result = list(sorted(result))
     sql.update_quantiles(ip_range, numpy.quantile(result, 0.25), numpy.quantile(result, 0.5), numpy.quantile(result, 0.75))
@@ -33,7 +33,7 @@ def lof_range_main(ip_range, k=5):
     Count Local outlier factor of all devices in given range of addresses;
     """
     result = {}
-    for ip in sql.load_range_addresses(ip_range):
+    for ip in sql.get_ip_range(ip_range):
         if not ip[0] in result.keys():
             result[ip[0]] = lof_main(ip[0], ip_range, k)
             print( ip[0] )
@@ -66,7 +66,7 @@ def lof_interrange_main(source_range, target_range):
     Count Local outlier factor of all devices in source_range like they were part of target range.
     """
     result = {}
-    for ip in sql.load_range_addresses(source_range):
+    for ip in sql.get_ip_range(source_range):
         if not ip[0] in result.keys():
             result[ip[0]] = lof_main(ip[0], target_range)
     return result
