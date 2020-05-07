@@ -1,8 +1,8 @@
 from similarity_search.distance_functions.distance_functions import minkowski_distance
 from similarity_search.distance_functions.views import count_view
-from data_tools import SQLCommands as sqlCommands
+from data_tools import sql_commands as sql_c
 
-sql = sqlCommands.SQLCommands()
+sql = sql_c.sql_commands()
 
 
 def k_nn(view, host, ip_range, k, t):

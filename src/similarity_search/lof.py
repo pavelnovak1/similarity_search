@@ -1,5 +1,4 @@
 from cmath import inf
-import time
 
 
 def k_distance(host, ip_range, k):
