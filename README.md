@@ -1,18 +1,32 @@
 # Host Behavior Similarity Search Tool
-This tool was developed as part of my bachelor thesis. Its goal is to search for similar and different devices.
+This tool was developed as part of my bachelor thesis. Its goal is to search for similar and different devices based on their communication profiles.
 
 ## Schema
-The folder **data** contains all the data that was used to test the tool. The folder itself contains two *.csv* files that contain raw communication profiles. The *host_profile_ratios_anon.csv* file then contains the ratios of some features for each device. All data is anonymized. The subfolder **database** contains a database backup dump. This database was used in this program, and the functionality of this program is linked to this database. This folder also includes a schema of this database.
+- **Data** folder contains all the data that was used to test the tool. The folder itself contains two *.csv* files that contain raw communication profiles. The *host_profile_ratios_anon.csv* file contains the ratios of some features of a communication profiles. All data is anonymized. 
+Subfolder **Database** contains a database backup dump. This database was used in this program, and the functionality of this program is linked to this database. 
 
-**demo** folder contains scripts to show the functionality of this program.
+- **Demo** folder contains scripts to show the functionality of this program.
 
-**src** contains the whole implementation of this tool. Subfolder **API** contains the specification of REST API. Folder **data_tools** includes functions to communicate with the database. It also provides some predefined SQL commands which are used in this program. Folder **similarity_search** contain implementation of similarity search.
+- **Src** contains the whole implementation of this tool.
+ ..* Subfolder **API** contains the specification of REST API. 
+ ..* Subfolder **data_tools** includes functions to communicate with the database. It also provides some predefined SQL commands which are used in this program. 
+ ..* Subfolder **similarity_search** contain implementation of similarity search.
 
-Each folder contains *about.md* file, where is depicted the services and the functionality that each package provides.
+Each folder contains *README.md* file, where is depicted the services and the functionality that each package provides.
 
 ## Use
 
-1. Run src.main
+###Pre-requisites
+
+- PostgreSQL database v10.12
+- Python v3.6
+
+###Prepare
+
+- **Load the database** using command (user postgres) 'psql db_host_profiles < data/database/db_dump.sql'
+
+1. Run src.main ( on background )
+
 2. Using the HTTP GET function:
     - ***K-NN query***: 
     Return K nearest neighbours to the given host.
@@ -57,4 +71,4 @@ Each folder contains *about.md* file, where is depicted the services and the fun
 
 Guide, how to use all functions of this program is described in the documentation.
 
-The result is always in the JSON format. 
+The result is in the JSON format. 
