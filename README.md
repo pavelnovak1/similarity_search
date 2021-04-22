@@ -16,12 +16,13 @@ Each folder contains *README.md* file, where is depicted the services and the fu
 
 ## Use
 
-###Pre-requisites
+### Pre-requisites
 
 - PostgreSQL database v10.12
 - Python v3.6
+- Flask-RESTful package.
 
-###Prepare
+### Prepare
 
 - **Load the database** using command (user postgres) 'psql db_host_profiles < data/database/db_dump.sql'
 
